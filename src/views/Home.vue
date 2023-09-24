@@ -10,7 +10,7 @@
         <IonTitle>Erro 500</IonTitle>
       </template>
       <template v-else>
-        <swiper :modules="modules">
+        <swiper>
           <swiper-slide>
             <IonImg src="https://lojalacodemenina.com.br/wp-content/uploads/2023/06/mobile.png"></IonImg>
           </swiper-slide>
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { URL, CONSUMER_KEY, CONSUMER_SECRET } from '@/config';
-import { Autoplay, Pagination } from 'swiper';
+// import { Autoplay, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonImg, IonLoading, IonGrid, IonRow, IonCol, IonLabel, IonIcon } from '@ionic/vue';
 import { ref, onMounted } from 'vue';
@@ -50,7 +50,6 @@ import '@ionic/vue/css/ionic-swiper.css';
 const error500 = ref(false);
 const products:any = ref([]);
 const isLoading = ref(true);
-const modules = [Autoplay, Pagination];
 
 onMounted(async () => {
     await axios.get(`${URL}/wp-json/wc/v3/products`, {
@@ -58,9 +57,9 @@ onMounted(async () => {
         username: CONSUMER_KEY,
         password: CONSUMER_SECRET
       }
-    }).then((response) => {
+    }).then((response: { data: any; }) => {
         products.value = response.data;
-    }).catch((response) => {
+    }).catch((response: any) => {
         console.log(response);
         error500.value = true;
     })
